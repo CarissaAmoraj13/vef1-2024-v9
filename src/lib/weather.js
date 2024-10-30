@@ -13,10 +13,11 @@ async function sleep(ms) {
 
 /**
  * Tekur við gögnum frá Open Meteo og skilar fylki af spám í formi Forecast.
- * @param {unknown} data Gögn frá Open Meteo.
+ * @param {any} data Gögn frá Open Meteo.
  * @returns {Array<Forecast>}
  */
 function parseResponse(data) {
+<<<<<<< HEAD
   // Check if the expected properties exist in the data
   if (!data || !data.hourly || !data.hourly.time || !data.hourly.temperature_2m || !data.hourly.precipitation) {
     console.error('Invalid data structure:', data);
@@ -29,6 +30,35 @@ function parseResponse(data) {
     temperature: data.hourly.temperature_2m[index],
     precipitation: data.hourly.precipitation[index] || 0, // Default to 0 if no data
   }));
+=======
+  console.log(data);
+
+  const hourly = data.hourly;
+  const { time = [], precipitation = [], temperature_2m = [] } = hourly;
+
+  const allForecasts = [];
+  for (let i = 0; i < time.length; i++) {
+    /** @type string */
+    const _time = time[i];
+
+    /** @type number */
+    const _pre = precipitation[i];
+
+    /** @type number */
+    const _temp = temperature_2m[i];
+
+    /** @type Forecast */
+    const forecast = {
+      time: _time,
+      precipitation: _pre,
+      temperature: _temp,
+    };
+
+    allForecasts.push(forecast);
+  }
+
+  return allForecasts;
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 }
 
 /**
@@ -61,4 +91,6 @@ export async function weatherSearch(lat, lng) {
     console.error('Error fetching weather data:', response.statusText);
     throw new Error('Failed to fetch weather data');
   }
+
+  return [];
 }

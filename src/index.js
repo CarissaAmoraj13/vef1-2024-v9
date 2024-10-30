@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 import { el } from './lib/elements.js';
+=======
+/**
+ * Gefið efni fyrir verkefni 9, ekki er krafa að nota nákvæmlega þetta en nota
+ * verður gefnar staðsetningar.
+ */
+
+import { el, empty } from './lib/elements.js';
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 import { weatherSearch } from './lib/weather.js';
 
 /**
@@ -44,6 +53,7 @@ const locations = [
  * Hreinsar fyrri niðurstöður, passar að niðurstöður séu birtar og birtir element.
  * @param {Element} element
  */
+<<<<<<< HEAD
 function renderIntoResultsContent(results) {
   const resultsContainer = document.getElementById('results');
   const empty = '<p>No results found.</p>'; 
@@ -54,6 +64,19 @@ function renderIntoResultsContent(results) {
   }
 
  
+=======
+function renderIntoResultsContent(element) {
+  const outputElement = document.querySelector('.output');
+
+  if (!outputElement) {
+    console.warn('fann ekki .output');
+    return;
+  }
+
+  empty(outputElement);
+
+  outputElement.appendChild(element);
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 }
 
 
@@ -63,6 +86,7 @@ function renderIntoResultsContent(results) {
  * @param {Array<import('./lib/weather.js').Forecast>} results
  */
 function renderResults(location, results) {
+<<<<<<< HEAD
   const resultsElement = document.querySelector('.results'); 
   renderIntoResultsContent(resultsElement); 
 
@@ -77,6 +101,34 @@ function renderResults(location, results) {
     );
     resultsElement.appendChild(forecastElement);
   }
+=======
+  const header = el(
+    'tr',
+    {},
+    el('th', {}, 'Tími'),
+    el('th', {}, 'Hiti'),
+    el('th', {}, 'Úrkoma'),
+  );
+  console.log(results);
+  const body = el(
+    'tr',
+    {},
+    el('td', {}, 'Tími'),
+    el('td', {}, 'Hiti'),
+    el('td', {}, 'Úrkoma'),
+  );
+
+  const resultsTable = el('table', { class: 'forecast' }, header, body);
+
+  renderIntoResultsContent(
+    el(
+      'section',
+      {},
+      el('h2', {}, `Leitarniðurstöður fyrir: ${location.title}`),
+      resultsTable,
+    ),
+  );
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 }
 
 /**
@@ -84,20 +136,30 @@ function renderResults(location, results) {
  * @param {Error} error
  */
 function renderError(error) {
+<<<<<<< HEAD
   const resultsElement = document.querySelector('.results');
   renderIntoResultsContent(resultsElement); // Clear previous results
   const errorElement = el('div', { class: 'error' }, `Villa: ${error.message}`);
   resultsElement.appendChild(errorElement);
+=======
+  console.log(error);
+  const message = error.message;
+  renderIntoResultsContent(el('p', {}, `Villa: ${message}`));
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 }
 
 /**
  * Birta biðstöðu í viðmóti.
  */
 function renderLoading() {
+<<<<<<< HEAD
   const resultsElement = document.querySelector('.results');
   renderIntoResultsContent(resultsElement); 
   const loadingElement = el('div', { class: 'loading' }, 'Hleður...');
   resultsElement.appendChild(loadingElement);
+=======
+  renderIntoResultsContent(el('p', {}, 'Leita...'));
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 }
 
 /**
@@ -106,6 +168,7 @@ function renderLoading() {
  * @param {SearchLocation} location Staðsetning sem á að leita eftir.
  */
 async function onSearch(location) {
+<<<<<<< HEAD
   console.log('onSearch', location);
   renderLoading(); // Show loading state
 
@@ -116,6 +179,22 @@ async function onSearch(location) {
   } catch (error) {
     renderError(error); // Render error if any
   }
+=======
+  renderLoading();
+
+  let results;
+  try {
+    results = await weatherSearch(location.lat, location.lng);
+  } catch (error) {
+    renderError(error);
+    return;
+  }
+
+  renderResults(location, results ?? []);
+
+  // TODO útfæra
+  // Hér ætti að birta og taka tillit til mismunandi staða meðan leitað er.
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 }
 
 /**
@@ -181,8 +260,14 @@ function render(container, locations, onSearch, onSearchMyLocation) {
 
   parentElement.appendChild(locationsElement);
 
+<<<<<<< HEAD
   const resultsElement = el('div', { class: 'results' });
   parentElement.appendChild(resultsElement);
+=======
+  const outputElement = document.createElement('div');
+  outputElement.classList.add('output');
+  parentElement.appendChild(outputElement);
+>>>>>>> b6d16cfd50545d07629b752a9af74eb5c2a21a4e
 
   container.appendChild(parentElement);
 }
